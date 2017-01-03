@@ -1,32 +1,49 @@
+# imports
 import pygame
-from pygame.locals import *
 
-#Button object
+
 class Button(object):
-        #gotta initialize it
-        def __init__(self, inRect, text, color, font):
-                self.buttonRect = inRect
-                self.buttonFont = font.render(text, 1, (230, 230, 230))
-                self.color = color
-                self.info = text
-                self.centerText = self.buttonFont.get_rect()
-                self.centerText.centerx = self.buttonRect.centerx
-                self.centerText.centery = self.buttonRect.centery
-                self.click = False
+    """a button object, containing the following:
+        the rectangle it is contained in
+        the text present in it
+        the color of the text
+        the font of the text"""
 
-        def drawButton(self, GRID_DISPLAY):
-                pygame.draw.rect(GRID_DISPLAY, self.color, self.buttonRect, 2)
-                GRID_DISPLAY.blit(self.buttonFont, self.centerText)
+    # gotta initialize it
+    def __init__(self, in_rect, text, text_color, outline_color, font):
+        self.button_rect = in_rect
+        self.button_font = font.render(text, 1, text_color)
+        self.outline_color = outline_color
+        self.info = text
+        self.center_text = self.button_font.get_rect()
+        self.center_text.centerx = self.button_rect.centerx
+        self.center_text.centery = self.button_rect.centery
+        self.click = False
 
-        def checkClick(self, posX, posY):
-                if self.click:
-                        if posX > self.buttonRect.left and posX < self.buttonRect.right:
-                                if posY > self.buttonRect.top and posY < self.buttonRect.bottom:
-                                        return True
-                return False
+    def draw_button(self, display):
+        """draws the button's rectangle on the display
+            :param display: the display to draw on passed in as an arg"""
 
-        def resetClick(self):
-                self.click = False
+        pygame.draw.rect(display, self.outline_color, self.button_rect, 2)
+        display.blit(self.button_font, self.center_text)
 
-        def setClick(self):
-                self.click = True
+    def check_click(self, pos_x, pos_y):
+        """checks whether the passed in click event is within the bounds of the button
+            :param pos_x: x position of the mouse on click
+            :param pos_y: y position of the mouse on click"""
+
+        if self.click:
+            if self.button_rect.left < pos_x < self.button_rect.right \
+                    and self.button_rect.top < pos_y < self.button_rect.bottom:
+                return True
+        return False
+
+    def reset_click(self):
+        """resets the click boolean to False"""
+
+        self.click = False
+
+    def set_click(self):
+        """sets the click boolean to True"""
+
+        self.click = True
